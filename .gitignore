@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Environments & secrets
+.env
+.env.*
+
+# Data (generated locally, never committed)
+data/
+
+# Tooling caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# dbt
+dbt/target/
+dbt/dbt_packages/
+dbt/logs/
+
+# Airflow local artifacts
+airflow/logs/
+*.db
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
