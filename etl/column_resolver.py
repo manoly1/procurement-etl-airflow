@@ -28,6 +28,8 @@ class ColumnSpec:
     header: str
     aliases: tuple[str, ...] = ()
     required: bool = False
+    numeric: bool = False  # coerce "1 234,50" -> number in transform
+    pad: int | None = None  # zero-pad to this width (leading-zero keys)
 
 
 @dataclass(frozen=True)
@@ -44,6 +46,14 @@ class DatasetConfig:
             names.update(spec.aliases)
         return names
 
+    def numeric_fields(self) -> list[str]:
+        """Canonical fields whose values should be coerced to numbers."""
+        return [spec.field for spec in self.columns if spec.numeric]
+
+    def pad_fields(self) -> dict[str, int]:
+        """Canonical fields that need zero-padding, mapped to their width."""
+        return {spec.field: spec.pad for spec in self.columns if spec.pad}
+
 
 def load_config(path: str | Path) -> DatasetConfig:
     """Load a dataset column-mapping config from YAML."""
@@ -54,6 +64,8 @@ def load_config(path: str | Path) -> DatasetConfig:
             header=spec["header"],
             aliases=tuple(spec.get("aliases", []) or ()),
             required=bool(spec.get("required", False)),
+            numeric=bool(spec.get("numeric", False)),
+            pad=spec.get("pad"),
         )
         for fieldname, spec in data["columns"].items()
     )

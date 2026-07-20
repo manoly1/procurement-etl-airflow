@@ -14,6 +14,7 @@ columns:
     header: "Material"
     aliases: ["Material Number", "Matl"]
     required: true
+    pad: 8
   material_description:
     header: "Material Description"
     aliases: ["Description", "Short Text"]
@@ -22,6 +23,7 @@ columns:
     header: "Requested Quantity"
     aliases: ["Qty", "Req. Qty"]
     required: true
+    numeric: true
   requisitioner:
     header: "Requisitioner"
     aliases: ["Requester"]
