@@ -1,0 +1,44 @@
+[project]
+name = "procurement-etl"
+version = "0.0.0"
+description = "Weekly procurement reporting ETL pipeline (Airflow, pandas, PostgreSQL, dbt) on synthetic data."
+requires-python = ">=3.12"
+license = { text = "MIT" }
+readme = "README.md"
+# Runtime dependencies are added stage by stage as the modules that need them
+# land. Keeping this list honest (empty until used) avoids "installed but
+# unused" noise in the portfolio.
+dependencies = []
+
+[project.optional-dependencies]
+# Installed with:  pip install -e ".[dev]"
+dev = [
+  "pytest>=8",
+  "ruff>=0.6",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+# Source packages that make up the pipeline. They are created as skeletons in
+# Stage 0 and filled in from Stage 1 onward.
+packages = ["etl", "etl.transform", "datagen"]
+
+# --- Linting / formatting -----------------------------------------------------
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+
+[tool.ruff.lint]
+# A pragmatic starter set: pyflakes (F), pycodestyle (E/W), isort (I),
+# pyupgrade (UP), flake8-bugbear (B). Expanded as the code grows.
+select = ["E", "W", "F", "I", "UP", "B"]
+
+# --- Tests --------------------------------------------------------------------
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+# Make the source packages importable without an editable install.
+pythonpath = ["."]
