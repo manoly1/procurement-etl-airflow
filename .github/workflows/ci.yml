@@ -1,0 +1,46 @@
+name: CI
+
+# Gate every change: lint, format, tests, dbt graph and DAG compilation must all
+# pass before a PR can merge. This is the automated version of the old manual
+# TESTING.md checklist — green here means the pipeline's code contract holds.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install project (dev + dbt)
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev,dbt]"
+
+      - name: Lint (ruff)
+        run: ruff check .
+
+      - name: Format check (ruff)
+        run: ruff format --check .
+
+      - name: Tests (pytest)
+        run: pytest -q
+
+      - name: Compile Airflow DAGs
+        run: python -m py_compile dags/*.py
+
+      - name: dbt parse (graph compiles, refs resolve)
+        run: dbt parse --profiles-dir dbt --project-dir dbt
