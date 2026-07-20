@@ -15,6 +15,7 @@ dependencies = [
   "pyyaml>=6",  # declarative column-mapping configs (Stage 2)
   "sqlalchemy>=2",  # database access for the load layer (Stage 2)
   "psycopg2-binary>=2.9",  # PostgreSQL driver
+  "pyarrow>=15",  # parquet handoff between DAG tasks (Stage 3)
 ]
 
 [project.optional-dependencies]
