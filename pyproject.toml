@@ -26,6 +26,7 @@ dev = [
   "pytest>=8",
   "ruff>=0.6",
   "moto[s3]>=5",  # in-process S3 mock for object-store tests (Stage 6)
+  "sqlglot>=25",  # offline SQL validation for the BI query pack (Stage 7)
 ]
 # The dbt transformation layer (Stage 5). Kept separate from `dev` because it
 # pulls a large dependency tree; install with:  pip install -e ".[dbt]"
