@@ -9,6 +9,9 @@ readme = "README.md"
 # land. Keeping this list honest avoids "installed but unused" noise.
 dependencies = [
   "pandas>=2.2",  # key normalization / row compaction (Module 2), transforms (Stage 2)
+  "openpyxl>=3.1",  # read/write xlsx extracts
+  "typer>=0.12",  # datagen / etl command-line interfaces
+  "faker>=25",  # synthetic values for the data generator (Stage 1)
 ]
 
 [project.optional-dependencies]
