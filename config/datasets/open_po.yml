@@ -1,0 +1,51 @@
+# Declarative column mapping for the Open PO extract.
+# The analogue of the SPReportDataset sheet: canonical field -> source header
+# (+ aliases). The resolver maps whatever the file actually has onto these
+# canonical names, or fails with a clear message.
+name: open_po
+key: [po_number, po_item]
+columns:
+  po_number:
+    header: "PO Number"
+    aliases: ["PO No", "Purchasing Document"]
+    required: true
+  po_item:
+    header: "PO Item"
+    aliases: ["Item"]
+    required: true
+  material:
+    header: "Material"
+    aliases: ["Material Number", "Matl"]
+    required: true
+  material_description:
+    header: "Material Description"
+    aliases: ["Description", "Short Text"]
+    required: false
+  supplier:
+    header: "Supplier"
+    aliases: ["Vendor"]
+    required: true
+  order_quantity:
+    header: "Order Quantity"
+    aliases: ["Qty", "Order Qty"]
+    required: true
+  net_price:
+    header: "Net Price"
+    aliases: ["Price"]
+    required: true
+  currency:
+    header: "Currency"
+    aliases: ["Curr"]
+    required: false
+  delivery_date:
+    header: "Delivery Date"
+    aliases: ["Deliv. Date"]
+    required: false
+  plant:
+    header: "Plant"
+    aliases: []
+    required: false
+  requisitioner:
+    header: "Requisitioner"
+    aliases: ["Requester"]
+    required: false
