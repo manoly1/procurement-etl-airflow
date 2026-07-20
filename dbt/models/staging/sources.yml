@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: raw
+    description: "Weekly snapshots loaded by the Python ETL core."
+    schema: raw
+    tables:
+      - name: open_po
+      - name: all_prs

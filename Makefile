@@ -6,7 +6,7 @@
 .DEFAULT_GOAL := help
 PYTHON ?= python3
 
-.PHONY: help up down etl test lint fmt checkpoint
+.PHONY: help up down etl dbt test lint fmt checkpoint
 
 help:  ## Show this help
 	@echo "procurement-etl-airflow — available commands:"
@@ -25,6 +25,9 @@ etl:  ## Generate + load one week, e.g. `make etl DATASET=open_po WEEK=29`
 	$(PYTHON) -m datagen generate --dataset $(DATASET) --week $(WEEK)
 	$(PYTHON) -m etl run --dataset $(DATASET) --week $(WEEK) \
 		--path data/raw/$(DATASET)/week=$(WEEK)/$(DATASET)_W$(WEEK).xlsx
+
+dbt:  ## Build the dbt models + tests against Postgres (needs `make up`)
+	cd dbt && dbt build --profiles-dir . --project-dir .
 
 test:  ## Run the test suite (pytest)
 	@$(PYTHON) -m pytest -q

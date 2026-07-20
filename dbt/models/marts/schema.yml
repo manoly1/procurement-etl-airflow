@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: mart_open_po_weekly
+    description: "Open PO KPIs per reporting week (line count, quantity, value)."
+    columns:
+      - name: report_week
+        tests:
+          - unique
+          - not_null
+
+  - name: mart_top_suppliers
+    description: "Suppliers ranked by open-PO value per week."
+    columns:
+      - name: report_week
+        tests:
+          - not_null
+      - name: supplier
+        tests:
+          - not_null

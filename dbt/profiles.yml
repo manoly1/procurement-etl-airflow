@@ -1,0 +1,15 @@
+# dbt connection profile. Use with:  dbt build --profiles-dir dbt --project-dir dbt
+# Values default so `dbt parse` works offline; a real run reads the same
+# Postgres the pipeline loads into. Secrets stay in the environment.
+procurement:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: "{{ env_var('POSTGRES_HOST', 'localhost') }}"
+      port: "{{ env_var('POSTGRES_PORT', '5432') | int }}"
+      user: "{{ env_var('POSTGRES_USER', 'etl') }}"
+      password: "{{ env_var('POSTGRES_PASSWORD', 'etl') }}"
+      dbname: "{{ env_var('POSTGRES_DB', 'procurement') }}"
+      schema: raw
+      threads: 4
