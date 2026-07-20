@@ -13,14 +13,18 @@ help:  ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
 		awk 'BEGIN{FS=":.*?## "}{printf "  \033[36m%-12s\033[0m %s\n", $$1, $$2}'
 
-up:  ## Start the local stack (Docker Compose) — wired up in Stage 3
-	@echo "[stub] docker compose up -d  — added in Stage 3 (Airflow)."
+up:  ## Start the local stack (Postgres; more services in later stages)
+	docker compose up -d
 
-down:  ## Stop the local stack — wired up in Stage 3
-	@echo "[stub] docker compose down  — added in Stage 3 (Airflow)."
+down:  ## Stop the local stack
+	docker compose down
 
-etl:  ## Run the ETL core CLI — wired up in Stage 2
-	@echo "[stub] python -m etl run --dataset open_po --week 29  — added in Stage 2."
+DATASET ?= open_po
+WEEK ?= 29
+etl:  ## Generate + load one week, e.g. `make etl DATASET=open_po WEEK=29`
+	$(PYTHON) -m datagen generate --dataset $(DATASET) --week $(WEEK)
+	$(PYTHON) -m etl run --dataset $(DATASET) --week $(WEEK) \
+		--path data/raw/$(DATASET)/week=$(WEEK)/$(DATASET)_W$(WEEK).xlsx
 
 test:  ## Run the test suite (pytest)
 	@$(PYTHON) -m pytest -q

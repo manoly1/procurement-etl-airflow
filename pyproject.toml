@@ -13,6 +13,8 @@ dependencies = [
   "typer>=0.12",  # datagen / etl command-line interfaces
   "faker>=25",  # synthetic values for the data generator (Stage 1)
   "pyyaml>=6",  # declarative column-mapping configs (Stage 2)
+  "sqlalchemy>=2",  # database access for the load layer (Stage 2)
+  "psycopg2-binary>=2.9",  # PostgreSQL driver
 ]
 
 [project.optional-dependencies]
