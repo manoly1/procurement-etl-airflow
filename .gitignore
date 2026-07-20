@@ -8,6 +8,7 @@ venv/
 # Environments & secrets
 .env
 .env.*
+!.env.example
 
 # Data (generated locally, never committed)
 data/
@@ -24,6 +25,7 @@ dbt/logs/
 
 # Airflow local artifacts
 airflow/logs/
+logs/
 *.db
 
 # IDE / OS
