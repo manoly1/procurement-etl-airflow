@@ -1,0 +1,36 @@
+version: 2
+
+models:
+  - name: stg_open_po
+    description: "Cleaned, typed Open PO weekly snapshot."
+    columns:
+      - name: row_id
+        description: "Surrogate key: report_week + business key."
+        tests:
+          - unique
+          - not_null
+      - name: report_week
+        tests:
+          - not_null
+      - name: key
+        tests:
+          - not_null
+      - name: currency
+        tests:
+          - relationships:
+              to: ref('rates')
+              field: currency
+
+  - name: stg_all_prs
+    description: "Cleaned, typed All PRs weekly snapshot."
+    columns:
+      - name: row_id
+        tests:
+          - unique
+          - not_null
+      - name: report_week
+        tests:
+          - not_null
+      - name: key
+        tests:
+          - not_null

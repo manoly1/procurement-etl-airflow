@@ -25,6 +25,12 @@ dev = [
   "pytest>=8",
   "ruff>=0.6",
 ]
+# The dbt transformation layer (Stage 5). Kept separate from `dev` because it
+# pulls a large dependency tree; install with:  pip install -e ".[dbt]"
+dbt = [
+  "dbt-core>=1.9,<1.10",
+  "dbt-postgres>=1.9,<1.10",
+]
 
 [build-system]
 requires = ["setuptools>=68"]
