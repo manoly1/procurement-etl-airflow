@@ -17,6 +17,7 @@ columns:
     header: "Material"
     aliases: ["Material Number", "Matl"]
     required: true
+    pad: 8
   material_description:
     header: "Material Description"
     aliases: ["Description", "Short Text"]
@@ -29,10 +30,12 @@ columns:
     header: "Order Quantity"
     aliases: ["Qty", "Order Qty"]
     required: true
+    numeric: true
   net_price:
     header: "Net Price"
     aliases: ["Price"]
     required: true
+    numeric: true
   currency:
     header: "Currency"
     aliases: ["Curr"]
