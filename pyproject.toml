@@ -16,6 +16,7 @@ dependencies = [
   "sqlalchemy>=2",  # database access for the load layer (Stage 2)
   "psycopg2-binary>=2.9",  # PostgreSQL driver
   "pyarrow>=15",  # parquet handoff between DAG tasks (Stage 3)
+  "requests>=2.31",  # Telegram alerting callbacks (Stage 3)
 ]
 
 [project.optional-dependencies]
