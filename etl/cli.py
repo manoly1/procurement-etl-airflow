@@ -15,6 +15,7 @@ import typer
 
 from .load import get_engine, load_snapshot
 from .pipeline import build_snapshot_for
+from .storage import land_extract
 
 app = typer.Typer(help="Run the ETL core.", no_args_is_help=True, add_completion=False)
 
@@ -41,6 +42,17 @@ def run(
     engine = get_engine()
     rows = load_snapshot(snapshot, dataset, engine)
     typer.echo(f"loaded {rows} rows into raw.{dataset} (week {week})")
+
+
+@app.command()
+def land(
+    dataset: str = typer.Option(..., help="open_po | all_prs"),
+    week: int = typer.Option(..., help="ISO week number"),
+    path: str = typer.Option(..., help="Path to the extract xlsx"),
+) -> None:
+    """Upload a raw extract into the object store (MinIO/S3) under its key."""
+    key = land_extract(path, dataset, week)
+    typer.echo(f"landed {path} -> s3://.../{key}")
 
 
 if __name__ == "__main__":
