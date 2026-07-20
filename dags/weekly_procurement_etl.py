@@ -7,8 +7,10 @@ makes ``airflow dags backfill`` replay past weeks correctly (the multi-week
 ``*_SelectedWeeks`` of the original project).
 
 Two source branches (Open PO, All PRs) run independently with fail-fast, each:
-``generate -> wait_for_file (sensor) -> snapshot -> load``. Failures alert to
-Telegram via the DAG callbacks; tasks retry before they give up.
+``generate -> wait_for_file (sensor) -> land -> snapshot -> load``. The extract
+lands in the MinIO object store (the data-lake raw layer) before it is
+transformed. Failures alert to Telegram via the DAG callbacks; tasks retry
+before they give up.
 """
 
 from __future__ import annotations
@@ -78,6 +80,14 @@ def wait_for_file(dataset: str, week: int) -> bool:
 
 
 @task
+def land(dataset: str, path: str, week: int) -> str:
+    """Land the raw extract into the object store — the data-lake raw layer."""
+    from etl.storage import land_extract
+
+    return land_extract(path, dataset, week)
+
+
+@task
 def snapshot(dataset: str, path: str, week: int) -> str:
     """extract -> transform; persist the snapshot to parquet for handoff."""
     from datagen.seeds import build_seeds
@@ -115,11 +125,12 @@ def weekly_procurement_etl():
     for dataset in DATASETS:
         extracted = generate.override(task_id=f"generate_{dataset}")(dataset, week)
         sensed = wait_for_file.override(task_id=f"wait_{dataset}")(dataset, week)
+        landed = land.override(task_id=f"land_{dataset}")(dataset, extracted, week)
         snap = snapshot.override(task_id=f"snapshot_{dataset}")(
             dataset, extracted, week
         )
         load.override(task_id=f"load_{dataset}")(dataset, snap)
-        extracted >> sensed >> snap
+        extracted >> sensed >> landed >> snap
 
 
 dag_instance = weekly_procurement_etl()
