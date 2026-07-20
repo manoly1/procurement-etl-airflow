@@ -1,0 +1,40 @@
+# Declarative column mapping for the All PRs extract.
+name: all_prs
+key: [pr_number, pr_item]
+columns:
+  pr_number:
+    header: "PR Number"
+    aliases: ["PR No", "Purchase Requisition"]
+    required: true
+  pr_item:
+    header: "PR Item"
+    aliases: ["Item"]
+    required: true
+  material:
+    header: "Material"
+    aliases: ["Material Number", "Matl"]
+    required: true
+  material_description:
+    header: "Material Description"
+    aliases: ["Description", "Short Text"]
+    required: false
+  requested_quantity:
+    header: "Requested Quantity"
+    aliases: ["Qty", "Req. Qty"]
+    required: true
+  requisitioner:
+    header: "Requisitioner"
+    aliases: ["Requester"]
+    required: false
+  responsible:
+    header: "Responsible"
+    aliases: ["Owner"]
+    required: false
+  release_date:
+    header: "Release Date"
+    aliases: ["Rel. Date"]
+    required: false
+  plant:
+    header: "Plant"
+    aliases: []
+    required: false
